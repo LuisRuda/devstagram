@@ -1,32 +1,37 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react'
+import { createStackNavigator, createAppContainer } from 'react-navigation'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import ReduxThunk from 'redux-thunk'
 
+import Reducers from './src/Reducers'
+
+import Preload from './src/screens/Preload'
+import Home from './src/screens/Home'
+import Login from './src/screens/Login'
+
+let store = createStore(Reducers, applyMiddleware(ReduxThunk))
+
+const AppNavigator = createStackNavigator({
+    Preload: {
+        screen: Preload
+    },
+    Home: {
+        screen: Home
+    },
+    Login: {
+        screen: Login
+    }
+})
+
+const AppContainer = createAppContainer(AppNavigator)
 
 export default class App extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to React Native!</Text>
-            </View>
-        );
+            <Provider store={store}>
+                <AppContainer />
+            </Provider>
+        )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});
