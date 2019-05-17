@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, ImageBackground, Text, TextInput, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 
-import { checkLogin } from '../actions/AuthActions'
+import { checkLogin, signInUser, changeEmail, changePassword } from '../actions/AuthActions'
 
 export class Login extends Component {
     static navigationOptions = {
@@ -15,9 +15,14 @@ export class Login extends Component {
         this.state = {}
 
         this.signUpAction = this.signUpAction.bind(this)
+        this.loginAction = this.loginAction.bind(this)
     }
     signUpAction() {
         this.props.navigation.navigate('SignUp')
+    }
+
+    loginAction() {
+        this.props.signInUser(this.props.email, this.props.password)
     }
 
     render() {
@@ -26,18 +31,22 @@ export class Login extends Component {
                 <Text style={styles.logo}>Devstagram</Text>
 
                 <TextInput
+                    value={this.props.email}
+                    onChangeText={this.props.changeEmail}
                     style={styles.input}
                     placeholder='Digite seu e-mail'
                     placeholderTextColor='#FFF'
                     underlineColorAndroid='transparent' />
                 <TextInput
+                    value={this.props.password}
+                    onChangeText={this.props.changePassword}
                     style={styles.input}
                     placeholder='Digite sua senha'
                     placeholderTextColor='#FFF'
                     secureTextEntry={true}
                     underlineColorAndroid='transparent' />
 
-                <TouchableHighlight onPress={() => {}} style={styles.actionButton} underlayColor='#307EAF'>
+                <TouchableHighlight onPress={this.loginAction} style={styles.actionButton} underlayColor='#307EAF'>
                     <Text style={styles.actionButtonText}>Fazer login</Text>
                 </TouchableHighlight>
 
@@ -100,8 +109,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        status: state.auth.status
+        status: state.auth.status,
+        email: state.auth.email,
+        password: state.auth.password
     }
 }
-const LoginConnect = connect(mapStateToProps, { checkLogin })(Login)
+const LoginConnect = connect(mapStateToProps, { checkLogin, signInUser, changeEmail, changePassword })(Login)
 export default LoginConnect
