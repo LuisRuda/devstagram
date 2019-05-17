@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { checkLogin } from '../actions/AuthActions'
 
-export class Login extends Component {
+export class SignUp extends Component {
     static navigationOptions = {
         title: '',
         header: null
@@ -14,10 +14,10 @@ export class Login extends Component {
         super(props)
         this.state = {}
 
-        this.signUpAction = this.signUpAction.bind(this)
+        this.signInAction = this.signInAction.bind(this)
     }
-    signUpAction() {
-        this.props.navigation.navigate('SignUp')
+    signInAction() {
+        this.props.navigation.goBack()
     }
 
     render() {
@@ -25,6 +25,11 @@ export class Login extends Component {
             <ImageBackground source={require('../assets/bg.jpg')} style={styles.container}>
                 <Text style={styles.logo}>Devstagram</Text>
 
+                <TextInput
+                    style={styles.input}
+                    placeholder='Digite seu nome'
+                    placeholderTextColor='#FFF'
+                    underlineColorAndroid='transparent' />
                 <TextInput
                     style={styles.input}
                     placeholder='Digite seu e-mail'
@@ -38,11 +43,11 @@ export class Login extends Component {
                     underlineColorAndroid='transparent' />
 
                 <TouchableHighlight onPress={() => {}} style={styles.actionButton} underlayColor='#307EAF'>
-                    <Text style={styles.actionButtonText}>Fazer login</Text>
+                    <Text style={styles.actionButtonText}>Fazer cadastro</Text>
                 </TouchableHighlight>
 
-                <TouchableHighlight onPress={this.signUpAction} style={styles.signButton} underlayColor='transparent'>
-                    <Text style={styles.signButtonText}>Ainda não possui cadastro? Clique aqui</Text>
+                <TouchableHighlight onPress={this.signInAction} style={styles.signButton} underlayColor='transparent'>
+                    <Text style={styles.signButtonText}>Já tem cadastro? Clique aqui</Text>
                 </TouchableHighlight>
             </ImageBackground>
         )
@@ -103,5 +108,5 @@ const mapStateToProps = (state) => {
         status: state.auth.status
     }
 }
-const LoginConnect = connect(mapStateToProps, { checkLogin })(Login)
-export default LoginConnect
+const SignUpConnect = connect(mapStateToProps, { checkLogin })(SignUp)
+export default SignUpConnect
