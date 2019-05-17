@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native'
+import DevstagramApi from '../DevstagramApi'
 
 export const checkLogin = () => {
     return (dispatch) => {
@@ -33,18 +34,15 @@ export const checkLogin = () => {
 
 export const signInUser = (email, pass) => {
     return (dispatch) => {
-        let endpoint = 'https://alunos.b7web.com.br/apis/devstagram/users/login'
-        let jsonData = JSON.stringify({
-            email,
-            pass
-        })
 
-        fetch(endpoint, {
+        DevstagramApi.req({
+            endpoint: 'users/login',
             method: 'POST',
-            body: jsonData
-        })
-            .then((r) => r.json())
-            .then((json) => {
+            data: {
+                email,
+                pass
+            },
+            success: (json) => {
                 if (json.error == '') {
 
                     AsyncStorage.setItem('jwt', json.jwt)
@@ -58,28 +56,26 @@ export const signInUser = (email, pass) => {
                 } else {
                     alert(json.error)
                 }
-            })
-            .catch((error) => {
+            },
+            error: (error) => {
                 alert('Erro de requisição')
-            })
+            }
+        })
     }
 }
 
 export const registerNewUser = (name, email, pass) => {
     return (dispatch) => {
-        let endpoint = 'https://alunos.b7web.com.br/apis/devstagram/users/new'
-        let jsonData = JSON.stringify({
-            name,
-            email,
-            pass
-        })
 
-        fetch(endpoint, {
+        DevstagramApi.req({
+            endpoint: 'users/new',
             method: 'POST',
-            body: jsonData
-        })
-            .then((r) => r.json())
-            .then((json) => {
+            data: {
+                name,
+                email,
+                pass
+            },
+            success: (json) => {
                 if (json.error == '') {
 
                     AsyncStorage.setItem('jwt', json.jwt)
@@ -93,10 +89,11 @@ export const registerNewUser = (name, email, pass) => {
                 } else {
                     alert(json.error)
                 }
-            })
-            .catch((error) => {
+            },
+            error: (error) => {
                 alert('Erro de requisição')
-            })
+            }
+        })
     }
 }
 
